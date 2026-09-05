@@ -2,6 +2,8 @@
 
 `wd` (warp directory) bookmarks directories you use often and lets you jump to them by name from PowerShell or Command Prompt.
 
+![Animated PowerShell example: save a directory with wd add, jump to it, list bookmarks, and update or remove them.](assets/wd-demo.gif)
+
 ```text
 PS C:\projects\some-long-project-name> wd add project
 PS C:\projects\some-long-project-name> cd C:\Windows

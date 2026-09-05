@@ -14,6 +14,7 @@ foreach ($folder in @('scripts', 'shell')) {
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Install.ps1') -Destination (Join-Path $stage 'scripts')
 Copy-Item -LiteralPath (Join-Path $root 'shell/wd.cmd'), (Join-Path $root 'shell/wd.psm1') -Destination (Join-Path $stage 'shell')
 Copy-Item -LiteralPath (Join-Path $root 'README.md'), (Join-Path $root 'LICENSE'), (Join-Path $root 'THIRD-PARTY-NOTICES.md'), (Join-Path $root 'CHANGELOG.md') -Destination $stage
+Copy-Item -LiteralPath (Join-Path $root 'assets') -Destination $stage -Recurse
 $archive = Join-Path $root "publish/wd-$version-win-x64.zip"
 Compress-Archive -Path (Join-Path $stage '*') -DestinationPath $archive -Force
 Get-FileHash -LiteralPath $archive -Algorithm SHA256
