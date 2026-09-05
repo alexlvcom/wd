@@ -14,3 +14,14 @@
 - After a user-visible change, run a Release build, publish the exact self-contained executable, run `tests/Invoke-Tests.ps1`, and deploy it using the private `.ai-metadata.env` target for local testing.
 - Do not commit `.ai-metadata.env`, `bin/`, `obj/`, `publish/`, or test artifacts.
 - Do not commit, tag, push, or publish a hosted release unless the user explicitly asks for those actions.
+
+## Deployment and GitHub releases
+
+- Use the shared `dotnet-local-deploy` skill after implementation. Resolve the executable destination from private `.ai-metadata.env`; install updated wrappers and license notices too.
+- When the user says "work is done", use `dotnet-work-is-done` and `commit-message-style`. The release branch is `master`; GitHub origin is `https://github.com/alexlvcom/wd.git`.
+- Preflight authenticated GitHub release access before committing or tagging a release. Git push access alone does not prove release API access.
+- Finalize README and CHANGELOG, verify matching versions, run the Release build and shell tests, commit, and rebuild from that commit.
+- Run `scripts/Package.ps1` from the exact release commit. Test the archive's installer with `-SkipBuild`; users must not need an SDK for a downloaded release.
+- Push `master`, create and push an annotated `v<version>` tag, and publish a normal GitHub release with changelog notes.
+- Upload `wd-<version>-win-x64.zip`, which includes the executable, wrappers, installer, and license notices. This complete archive is the release asset instead of a bare executable.
+- Verify the remote branch/tag, download the uploaded archive, and compare its SHA-256 with the local archive. Include its hash in the release notes.

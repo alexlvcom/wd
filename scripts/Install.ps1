@@ -1,7 +1,8 @@
 [CmdletBinding()]
 param(
     [string] $PublishDirectory = (Join-Path $PSScriptRoot '..\publish'),
-    [string] $BinDirectory = (Join-Path ([Environment]::GetFolderPath('UserProfile')) 'bin')
+    [string] $BinDirectory = (Join-Path ([Environment]::GetFolderPath('UserProfile')) 'bin'),
+    [switch] $SkipBuild
 )
 
 $ErrorActionPreference = 'Stop'
@@ -10,8 +11,15 @@ $projectFile = Join-Path $projectRoot 'src\Wd\Wd.csproj'
 $publishDirectory = [IO.Path]::GetFullPath($PublishDirectory)
 $binDirectory = [IO.Path]::GetFullPath($BinDirectory)
 
-dotnet publish $projectFile -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o $publishDirectory
-if ($LASTEXITCODE -ne 0) { throw 'dotnet publish failed.' }
+if (-not $SkipBuild) {
+    dotnet publish $projectFile -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o $publishDirectory
+    if ($LASTEXITCODE -ne 0) { throw 'dotnet publish failed.' }
+}
+foreach ($required in @('wd-core.exe', 'LICENSE', 'THIRD-PARTY-NOTICES.md', 'licenses/dotnet/LICENSE.TXT', 'licenses/dotnet/THIRD-PARTY-NOTICES.TXT')) {
+    if (-not (Test-Path -LiteralPath (Join-Path $publishDirectory $required) -PathType Leaf)) {
+        throw "Missing published file: $required"
+    }
+}
 
 New-Item -ItemType Directory -Path $binDirectory -Force | Out-Null
 Copy-Item -LiteralPath (Join-Path $publishDirectory 'wd-core.exe') -Destination (Join-Path $binDirectory 'wd-core.exe') -Force

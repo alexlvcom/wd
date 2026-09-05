@@ -29,6 +29,17 @@ The installed executable is self-contained, so the .NET runtime is not needed af
 
 ## Install
 
+For a prebuilt ZIP from this repository's GitHub Releases, extract it and run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\Install.ps1 -SkipBuild
+```
+
+This installation needs neither Git nor the .NET SDK. Keep the full archive
+contents together, including the license notices.
+
+To build from source, follow the instructions below.
+
 Clone the repository and run the installer from PowerShell:
 
 ```powershell
@@ -173,6 +184,11 @@ dotnet publish .\src\Wd\Wd.csproj -c Release -r win-x64 --self-contained true -p
 ```
 
 ## Project layout
+
+Maintainers use the shared `dotnet-local-deploy` skill for local testing and
+`dotnet-work-is-done` for GitHub releases from `master`. The repository-specific
+release checklist is in [AGENTS.md](AGENTS.md). Run `scripts/Package.ps1` to build
+`publish/wd-<version>-win-x64.zip` with the installer, wrappers, and license notices.
 
 ```text
 src/Wd/Program.cs        Command implementation and .warprc storage

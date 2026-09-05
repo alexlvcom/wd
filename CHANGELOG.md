@@ -5,6 +5,7 @@
 - License the Windows implementation under MIT and retain upstream attribution.
 - Include project and .NET runtime license notices in published builds and local installations.
 - Document independent project status and distribution requirements.
+- Add complete release ZIP packaging and installation without a build or SDK.
 
 ## 1.0.0 - 2026-09-04
 
