@@ -9,7 +9,14 @@ PS C:\Windows> wd project
 PS C:\projects\some-long-project-name>
 ```
 
-It follows the command model of the [`wd` plugin for Oh My Zsh](https://github.com/mfaerevaag/wd), uses the same `~/.warprc` storage format, and understands Windows drive-letter paths.
+It follows the command model of the [`wd` plugin for Oh My Zsh](https://github.com/mfaerevaag/wd) by Markus Færevaag and understands Windows drive-letter paths. This is an independent Windows implementation, not an official Oh My Zsh project or an endorsed upstream release.
+
+## License and attribution
+
+The Windows implementation is available under the [MIT license](LICENSE).
+The original plugin's copyright and MIT permission notice are preserved in
+[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+MIT permits use, modification, redistribution, and commercial use subject to its notice requirements.
 
 ## Requirements
 
@@ -22,13 +29,16 @@ The installed executable is self-contained, so the .NET runtime is not needed af
 
 ## Install
 
-Open PowerShell and run:
+Clone the repository and run the installer from PowerShell:
 
 ```powershell
-git clone https://alexlv@bitbucket.org/alexlv/wd.git
+git clone https://github.com/alexlvcom/wd.git
 cd wd
 powershell -ExecutionPolicy Bypass -File .\scripts\Install.ps1
 ```
+
+You can also use **Code → Download ZIP**, extract it, and run the installer
+from the extracted directory.
 
 The installer:
 
@@ -111,7 +121,9 @@ Set `WD_CONFIG` to change that location for all commands, or use a different fil
 wd --config C:\configs\work.warprc list
 ```
 
-The file is plain text and compatible with the Oh My Zsh plugin:
+The file uses the original plugin's `name:path` convention. Windows drive paths
+are not directly usable on Linux, and full compatibility with Zsh-escaped names
+is not guaranteed:
 
 ```text
 work:C:\projects\my-app
@@ -148,6 +160,11 @@ Import-Module wd -Force
 ```
 
 ## Build and test
+
+When sharing a self-contained build, include `LICENSE`, `THIRD-PARTY-NOTICES.md`,
+and the `licenses/` directory from the publish output alongside the executable.
+The installer keeps copies under `%USERPROFILE%\bin\wd-licenses`.
+Do not distribute the executable alone.
 
 ```powershell
 dotnet build .\src\Wd\Wd.csproj -c Release

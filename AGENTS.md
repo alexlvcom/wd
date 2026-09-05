@@ -9,6 +9,7 @@
 - Keep installation idempotent. Never duplicate user `PATH` entries or managed PowerShell profile lines, and preserve unrelated profile content.
 - Keep version values in `src/Wd/Wd.csproj` synchronized: `Version` and `InformationalVersion` use `N.N.N`; `FileVersion` and `AssemblyVersion` use `N.N.N.0`.
 - Do not append commit hashes or other build identifiers to the product version.
+- Preserve LICENSE and THIRD-PARTY-NOTICES.md. Distribute them and the published licenses directory with binaries; retain the notices from the exact bundled .NET runtime.
 - Use one changelog heading for all work planned for the same unreleased version. Do not bump the version again during testing iterations.
 - After a user-visible change, run a Release build, publish the exact self-contained executable, run `tests/Invoke-Tests.ps1`, and deploy it using the private `.ai-metadata.env` target for local testing.
 - Do not commit `.ai-metadata.env`, `bin/`, `obj/`, `publish/`, or test artifacts.

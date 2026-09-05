@@ -6,12 +6,25 @@
     <Nullable>enable</Nullable>
     <AssemblyName>wd-core</AssemblyName>
     <RootNamespace>Wd</RootNamespace>
-    <Version>1.0.0</Version>
-    <FileVersion>1.0.0.0</FileVersion>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <InformationalVersion>1.0.0</InformationalVersion>
+    <Version>1.0.1</Version>
+    <FileVersion>1.0.1.0</FileVersion>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <InformationalVersion>1.0.1</InformationalVersion>
+    <Authors>Alex LV</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <PublishSingleFile>true</PublishSingleFile>
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../LICENSE;../../THIRD-PARTY-NOTICES.md" Link="%(Filename)%(Extension)" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+  </ItemGroup>
+  <Target Name="PublishRuntimeNotices" AfterTargets="Publish" Condition="'$(SelfContained)' == 'true'">
+    <ItemGroup>
+      <CoreRuntimePack Include="@(ResolvedRuntimePack)" Condition="'%(ResolvedRuntimePack.FrameworkName)' == 'Microsoft.NETCore.App'" />
+      <RuntimeNotice Include="@(CoreRuntimePack->'%(PackageDirectory)/LICENSE.TXT');@(CoreRuntimePack->'%(PackageDirectory)/THIRD-PARTY-NOTICES.TXT')" />
+    </ItemGroup>
+    <Error Condition="'@(RuntimeNotice)' == ''" Text="Cannot locate the resolved runtime license notices." />
+    <Copy SourceFiles="@(RuntimeNotice)" DestinationFolder="$(PublishDir)licenses/dotnet" />
+  </Target>
 </Project>

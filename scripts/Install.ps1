@@ -16,6 +16,10 @@ if ($LASTEXITCODE -ne 0) { throw 'dotnet publish failed.' }
 New-Item -ItemType Directory -Path $binDirectory -Force | Out-Null
 Copy-Item -LiteralPath (Join-Path $publishDirectory 'wd-core.exe') -Destination (Join-Path $binDirectory 'wd-core.exe') -Force
 Copy-Item -LiteralPath (Join-Path $projectRoot 'shell\wd.cmd') -Destination (Join-Path $binDirectory 'wd.cmd') -Force
+$noticeDirectory = Join-Path $binDirectory 'wd-licenses'
+New-Item -ItemType Directory -Path $noticeDirectory -Force | Out-Null
+Copy-Item -LiteralPath (Join-Path $publishDirectory 'LICENSE'), (Join-Path $publishDirectory 'THIRD-PARTY-NOTICES.md') -Destination $noticeDirectory -Force
+Copy-Item -LiteralPath (Join-Path $publishDirectory 'licenses') -Destination $noticeDirectory -Recurse -Force
 
 [string] $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
 $pathEntries = @($userPath -split ';' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
